@@ -19,4 +19,4 @@ foreach ($gpo in $allGposInDomain) {
     if ($report -match $string) { 
         write-host "********** Match found in: $($gpo.DisplayName) **********" 
     } 
-} 
+}
