@@ -17,7 +17,7 @@ Import-PSSession $Session -DisableNameChecking
 function prompt {
     if ($global:Session) {
         Write-Host "Don't forget to run 'Remove-PSSession `$Session' before closing the session." -ForegroundColor Yellow
-        if ((Get-PSSession | Where-Object { $_.Id -eq $global:Session.Id }) -eq $null) {
+        if ($null -eq (Get-PSSession | Where-Object { $_.Id -eq $global:Session.Id })) {
             $global:Session = $null
         }
     }
