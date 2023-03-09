@@ -1,5 +1,6 @@
 # Script to search GPO for a string
 # v1.0 28.02.2022
+# Original Script from someone else but forgot from where
  
 #Get the search-string
 $string = Read-Host -Prompt "What string do you want to search for?" 

@@ -5,7 +5,7 @@
 Import-Module Appx -usewindowspowershell
 
 # List installed Apps
-Get-AppxPackage | Select Name, PackageFullName
+Get-AppxPackage | Select-Object Name, PackageFullName
 
 # Reinstall specific App
 # Example Photos
