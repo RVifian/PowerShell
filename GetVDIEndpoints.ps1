@@ -42,4 +42,4 @@ $qSrv = New-Object "Vmware.Hv.QueryServiceService"
 # Retrieve session information for the specified user from the Horizon View Server using the query service object.
 # Select the relevant properties from the session information.
 # Finally, filter the results to only show sessions for the specified user.
-$qSRv.QueryService_Query($global:DefaultHVServers[0].ExtensionData,$query) | Select -ExpandProperty Results | Select -ExpandProperty NamesData | Select-Object -Property UserName,MachineOrRDSServerDNS,clientname  | Where-Object {$_.UserName -eq "$DomainName\$User"}
+$qSRv.QueryService_Query($global:DefaultHVServers[0].ExtensionData,$query) | Select-Object -ExpandProperty Results | Select-Object -ExpandProperty NamesData | Select-Object -Property UserName,MachineOrRDSServerDNS,clientname  | Where-Object {$_.UserName -eq "$DomainName\$User"}
