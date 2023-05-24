@@ -1,5 +1,5 @@
 # Script to Connect to Exchange from local
-# v1.0 0.03.2022
+# v1.0 08.03.2023
 
 # Get credentials
 $UserCredential = Get-Credential
