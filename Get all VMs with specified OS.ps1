@@ -12,7 +12,7 @@ $SearchCriteria = Read-Host -Prompt "What are you searching for?"
 # Get a list of virtual machines
 Get-VM |
 
-# Filter the virtual machines whose Guest Fullname (Operating System) contains "2022"
+# Filter the virtual machines whose Guest Fullname (Operating System) contains $SearchCriteria
 where{$_.ExtensionData.Config.GuestFullname -match "$SearchCriteria"} |
 
 # Select the following properties for each virtual machine:
