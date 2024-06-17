@@ -43,11 +43,6 @@ if (-not (Get-PrtgClient)) {
 # List all devices and sort them.
 Get-Device | Sort-Object
 
-# Wait for user input to continue.
-Write-Host -NoNewLine 'Press any key to continue...'
-Write-Host ""
-$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
-
 # Prompt the user to enter the device ID for which they want to add sensors.
 $endpoint = Read-Host -Prompt "For which endpoint ID would you like to add sensors?"
 
