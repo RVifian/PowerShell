@@ -17,7 +17,8 @@
 # Check if the PrtgAPI module is installed, and if not, install it.
 if (Get-Module -ListAvailable -Name PrtgAPI) {
     # Module already installed, proceeding.
-} else {
+}
+else {
     # Module not found, installing PrtgAPI module.
     Install-Module -Name PrtgAPI
 }
@@ -62,18 +63,28 @@ $services = @(
 $device | Get-Sensor | Where-Object { $_.Name -like "*Trend*" } | Select-Object -ExpandProperty Name
 
 # List all sensors with names containing "Apex One" on the specified device.
-$device | Get-Sensor | Where-Object { $_.Name -like "*Apex One*" } | Select-Object -ExpandProperty Name
+$apexOneSensors = $device | Get-Sensor | Where-Object { $_.Name -like "*Apex One*" } | Select-Object -ExpandProperty Name
 
-# Wait for user input to remove old sensors.
-Write-Host -NoNewLine 'Press any key to remove old sensors'
-Write-Host ""
-$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
+# Only proceed if there are any "Apex One" sensors.
+if ($apexOneSensors) {
+    # Display the names of the found sensors (optional).
+    Write-Host "Found the following 'Apex One' sensors:"
+    $apexOneSensors | ForEach-Object { Write-Host $_ }
 
-# Remove old sensors with names containing "Apex One" from the device.
-$device | Get-Sensor | Where-Object { $_.Name -like "*Apex One*" } | Remove-Object
+    # Wait for user input to remove old sensors.
+    Write-Host -NoNewLine 'Press any key to remove old sensors'
+    Write-Host ""
+    $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
 
-# Confirm that old "Apex One" sensors are removed (no output is expected).
-$device | Get-Sensor | Where-Object { $_.Name -like "*Apex One*" }
+    # Remove old sensors with names containing "Apex One" from the device.
+    $device | Get-Sensor | Where-Object { $_.Name -like "*Apex One*" } | Remove-Object
+
+    # Confirm that old "Apex One" sensors are removed (no output is expected).
+    $device | Get-Sensor | Where-Object { $_.Name -like "*Apex One*" }
+}
+else {
+    Write-Host "No 'Apex One' sensors found."
+}
 
 # Retrieve services from the device matching the $services pattern.
 $trendSensors = $device | Get-SensorTarget wmiservice $services -Params
@@ -93,7 +104,8 @@ foreach ($service in $services) {
     $matchedService = $params | Where-Object { $_.DisplayName -eq $service }
     if ($matchedService) {
         Write-Output "Service found: $($matchedService.DisplayName)"
-    } else {
+    }
+    else {
         $allServicesFound = $false
     }
 }
@@ -107,7 +119,8 @@ if ($allServicesFound) {
     foreach ($trendSensor in $trendSensors) {
         $device | Add-Sensor $trendSensor
     }
-} else {
+}
+else {
     Write-Output "Some expected services are missing on the device."
 }
 
