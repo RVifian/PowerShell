@@ -121,7 +121,7 @@ if ($allServicesFound) {
     }
 }
 else {
-    Write-Output "Some expected services are missing on the device."
+    Write-Host "Some expected services are missing on the device." -ForegroundColor Red
 }
 
 # Confirm new "Trend Micro" sensors added to the device.
