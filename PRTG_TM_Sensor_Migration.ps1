@@ -73,7 +73,7 @@ $apexOneSensors = $device | Get-Sensor | Where-Object { $_.Name -like $OldPatter
 # Only proceed if there are any sensors matching the $OldPattern.
 if ($apexOneSensors) {
     # Display the names of the found sensors (optional).
-    Write-Host "Found the following 'Apex One' sensors:"
+    Write-Host "Found the following $OldPattern sensors:"
     $apexOneSensors | ForEach-Object { Write-Host $_ }
 
     # Wait for user input to remove old sensors.
@@ -88,7 +88,7 @@ if ($apexOneSensors) {
     $device | Get-Sensor | Where-Object { $_.Name -like $OldPattern }
 }
 else {
-    Write-Host "No 'Apex One' sensors found."
+    Write-Host "No $OldPattern sensors found."
 }
 
 # Retrieve services from the device matching the $services pattern.
