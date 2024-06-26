@@ -14,6 +14,20 @@
 # - Trend Micro Deep Security Notifier
 # - Trend Micro Response Service
 
+# Define variables for sensor names
+$OldPattern = "*Apex One*"
+$NewPattern = "*Trend*"
+
+
+# Array of relevant services expected on the device.
+$services = @(
+    "Trend Micro Solution Platform",
+    "Trend Micro Cloud Endpoint Telemetry Service",
+    "Trend Micro Deep Security Agent",
+    "Trend Micro Deep Security Monitor",
+    "Trend Micro Endpoint Basecamp"
+)
+
 # Check if the PrtgAPI module is installed, and if not, install it.
 if (Get-Module -ListAvailable -Name PrtgAPI) {
     # Module already installed, proceeding.
@@ -50,22 +64,13 @@ $endpoint = Read-Host -Prompt "For which endpoint ID would you like to add senso
 # Retrieve the device information based on the provided ID.
 $device = Get-Device -Id $endpoint
 
-# Array of relevant services expected on the device.
-$services = @(
-    "Trend Micro Solution Platform",
-    "Trend Micro Cloud Endpoint Telemetry Service",
-    "Trend Micro Deep Security Agent",
-    "Trend Micro Deep Security Monitor",
-    "Trend Micro Endpoint Basecamp"
-)
+# List all sensors with names containing the $NewPattern on the specified device.
+$device | Get-Sensor | Where-Object { $_.Name -like $NewPattern } | Select-Object -ExpandProperty Name
 
-# List all sensors with names containing "Trend" on the specified device.
-$device | Get-Sensor | Where-Object { $_.Name -like "*Trend*" } | Select-Object -ExpandProperty Name
+# List all sensors with names containing the $OldPattern on the specified device.
+$apexOneSensors = $device | Get-Sensor | Where-Object { $_.Name -like $OldPattern } | Select-Object -ExpandProperty Name
 
-# List all sensors with names containing "Apex One" on the specified device.
-$apexOneSensors = $device | Get-Sensor | Where-Object { $_.Name -like "*Apex One*" } | Select-Object -ExpandProperty Name
-
-# Only proceed if there are any "Apex One" sensors.
+# Only proceed if there are any sensors matching the $OldPattern.
 if ($apexOneSensors) {
     # Display the names of the found sensors (optional).
     Write-Host "Found the following 'Apex One' sensors:"
@@ -76,11 +81,11 @@ if ($apexOneSensors) {
     Write-Host ""
     $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
 
-    # Remove old sensors with names containing "Apex One" from the device.
-    $device | Get-Sensor | Where-Object { $_.Name -like "*Apex One*" } | Remove-Object
+    # Remove old sensors with names containing the $OldPattern from the device.
+    $device | Get-Sensor | Where-Object { $_.Name -like $OldPattern } | Remove-Object
 
-    # Confirm that old "Apex One" sensors are removed (no output is expected).
-    $device | Get-Sensor | Where-Object { $_.Name -like "*Apex One*" }
+    # Confirm that old sensors matching the $OldPattern are removed (no output is expected).
+    $device | Get-Sensor | Where-Object { $_.Name -like $OldPattern }
 }
 else {
     Write-Host "No 'Apex One' sensors found."
@@ -124,6 +129,6 @@ else {
     Write-Host "Some expected services are missing on the device." -ForegroundColor Red
 }
 
-# Confirm new "Trend Micro" sensors added to the device.
+# Confirm new sensors matching the $NewPattern added to the device.
 Write-Output "Newly installed sensors:"
-$device | Get-Sensor | Where-Object { $_.Name -like "*Trend*" } | Select-Object -ExpandProperty Name
+$device | Get-Sensor | Where-Object { $_.Name -like $NewPattern } | Select-Object -ExpandProperty Name
