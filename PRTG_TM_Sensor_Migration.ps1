@@ -117,7 +117,7 @@ foreach ($service in $services) {
 
 # Determine if all expected services are found on the device and add them as Sensors.
 if ($allServicesFound) {
-    Write-Output "All expected services are found on the device." -ForegroundColor Green
+    Write-Host "All expected services are found on the device." -ForegroundColor Green
     Write-Host -NoNewLine 'Press any key to add new sensors'
     Write-Host ""
     $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
