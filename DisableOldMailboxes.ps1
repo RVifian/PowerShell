@@ -39,7 +39,7 @@ else {
             Write-Host "Skipping user rsr"
         }  
     }
-    # Export the results to a CSV file (to verify found users before disabling)
+    # Export the results to a CSV file
     $results | Export-Csv -Path "C:\Temp\MailboxesToDisable.csv" -NoTypeInformation
     Write-Host "Export completed. Results saved to C:\Temp\MailboxesToDisable.csv"
 }
