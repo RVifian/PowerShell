@@ -5,6 +5,9 @@
 $endDate = Get-Date
 $startDate = $endDate.AddMonths(-6)
 
+# Get a list of all printers
+$printers = Get-Printer | Select-Object -ExpandProperty Name
+
 # Get all print job events and filter them manually
 $printEvents = Get-WinEvent -LogName "Microsoft-Windows-PrintService/Operational"
 
@@ -24,6 +27,13 @@ foreach ($event in $filteredEvents) {
         $printerJobCounts[$printerName]++
     } else {
         $printerJobCounts[$printerName] = 1
+    }
+}
+
+# Add all printers to the hashtable, setting count to 0 for those with no jobs
+foreach ($printer in $printers) {
+    if (-not $printerJobCounts.ContainsKey($printer)) {
+        $printerJobCounts[$printer] = 0
     }
 }
 
