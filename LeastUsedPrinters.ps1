@@ -21,7 +21,7 @@ $printerJobCounts = @{}
 
 # Loop through each filtered event and count jobs per printer
 foreach ($event in $filteredEvents) {
-    $printerName = ($event.Properties[2].Value) -replace '"',''
+    $printerName = ($event.Properties[4].Value) -replace '"',''
     
     if ($printerJobCounts.ContainsKey($printerName)) {
         $printerJobCounts[$printerName]++
