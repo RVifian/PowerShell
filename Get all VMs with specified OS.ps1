@@ -35,7 +35,4 @@ Select-Object Name,
     @{N="Running OS";E={$_.Guest.OsFullName}},
 
     # Custom calculated property: Powered On (Check if the virtual machine is powered on)
-    @{N="Powered On";E={ $_.PowerState -eq “PoweredOn”}},
-
-    # Custom calculated property: disktype (Storage format of the virtual machine's hard disk)
-    @{N="disktype";E={(Get-Harddisk $_).Storageformat}}
+    @{N="Powered On";E={ $_.PowerState -eq “PoweredOn”}}
